@@ -1,0 +1,18 @@
+.page { padding: var(--content-padding); animation: fadeIn 0.4s ease; }
+
+.section { padding: 24px; margin-bottom: 20px; }
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin-bottom: 20px;
+}
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 640px) { .formGrid { grid-template-columns: 1fr; } }
+
+.field { display: flex; flex-direction: column; }
+
+.saveRow { display: flex; justify-content: flex-end; }

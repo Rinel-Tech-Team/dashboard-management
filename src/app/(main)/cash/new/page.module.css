@@ -1,0 +1,11 @@
+.page { padding: var(--content-padding); animation: fadeIn 0.4s ease; }
+.backLink { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 20px; transition: color var(--transition-fast); }
+.backLink:hover { color: var(--accent-teal); }
+.formCard { padding: 28px; }
+.formTitle { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600; color: var(--text-heading); margin-bottom: 4px; }
+.formSubtitle { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 28px; }
+.form { display: flex; flex-direction: column; gap: 20px; }
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 640px) { .formGrid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; }
+.formActions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 8px; border-top: 1px solid var(--border-color); }

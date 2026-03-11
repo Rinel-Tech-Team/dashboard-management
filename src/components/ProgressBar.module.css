@@ -1,0 +1,45 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.track {
+  flex: 1;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.track.sm { height: 4px; }
+.track.md { height: 8px; }
+
+.fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.6s ease;
+}
+
+.fill.teal {
+  background: linear-gradient(90deg, var(--accent-teal), #2dd4bf);
+}
+
+.fill.indigo {
+  background: linear-gradient(90deg, var(--accent-indigo), #818cf8);
+}
+
+.fill.warning {
+  background: linear-gradient(90deg, var(--status-warning), #fbbf24);
+}
+
+.fill.danger {
+  background: linear-gradient(90deg, var(--status-danger), #f87171);
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 36px;
+  text-align: right;
+}

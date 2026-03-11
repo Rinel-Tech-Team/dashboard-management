@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ==========================================
+// Authentication & Roles
+// ==========================================
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique // "admin", "employee"
+  description String?
+  
+  users       User[]
+}
+
+model User {
+  id        String   @id @default(uuid()) // Can map to Supabase auth.users.id
+  email     String   @unique
+  name      String
+  roleId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role      Role     @relation(fields: [roleId], references: [id])
+}
+
+// ==========================================
+// HR & Employee Management
+// ==========================================
+
+model Department {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  head        String?    @default("-")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  employees   Employee[]
+}
+
+model Employee {
+  id              String         @id @default(uuid())
+  name            String
+  email           String         @unique
+  phone           String?
+  avatar          String?
+  position        String
+  status          String         @default("active") // active, inactive, cuti, resign
+  joinDate        DateTime
+  salary          Decimal        @db.Decimal(12, 2)
+  allowance       Decimal        @default(0) @db.Decimal(12, 2)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  departmentId    String
+  department      Department     @relation(fields: [departmentId], references: [id])
+  
+  // Projects the employee is part of
+  projectMembers  ProjectMember[]
+  
+  // Payroll records
+  payrollDetails  PayrollDetail[]
+}
+
+// ==========================================
+// Project & Client Management
+// ==========================================
+
+model Project {
+  id          String          @id @default(uuid())
+  name        String
+  client      String
+  description String?
+  budget      Decimal         @db.Decimal(15, 2)
+  spent       Decimal         @default(0) @db.Decimal(15, 2)
+  status      String          @default("planning") // planning, development, testing, finished, canceled
+  progress    Int             @default(0)
+  startDate   DateTime
+  deadline    DateTime
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  // Relations
+  teamMembers ProjectMember[]
+  invoices    Invoice[]
+}
+
+model ProjectMember {
+  projectId  String
+  employeeId String
+  assignedAt DateTime @default(now())
+
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, employeeId])
+}
+
+// ==========================================
+// Finance & Accounting
+// ==========================================
+
+model Invoice {
+  id          String    @id @default(uuid())
+  number      String    @unique
+  amount      Decimal   @db.Decimal(15, 2)
+  paidAmount  Decimal   @default(0) @db.Decimal(15, 2)
+  status      String    @default("pending") // pending, partial, paid, overdue
+  issuedDate  DateTime
+  dueDate     DateTime
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  
+  // Payments applied to this invoice
+  transactions Transaction[]
+}
+
+model CashAccount {
+  id          String        @id @default(uuid())
+  name        String
+  bank        String
+  balance     Decimal       @default(0) @db.Decimal(15, 2)
+  icon        String        @default("🏦")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  transactions Transaction[]
+  payrolls     Payroll[]
+}
+
+model Transaction {
+  id              String      @id @default(uuid())
+  date            DateTime
+  description     String
+  category        String      // Sewa, Operasional, Kas Kecil, Tabungan, Pembayaran Proyek, dsb
+  type            String      // income, expense
+  amount          Decimal     @db.Decimal(15, 2)
+  proofUrl        String?     // Bukti Transfer (Supabase Storage URL)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  accountId       String
+  account         CashAccount @relation(fields: [accountId], references: [id])
+  
+  // Optional link to an invoice if it's a project payment
+  invoiceId       String?
+  invoice         Invoice?    @relation(fields: [invoiceId], references: [id])
+}
+
+model Payroll {
+  id              String       @id @default(uuid())
+  type            String       // Gaji Bulanan, THR/Bonus, Lembur/Tambahan
+  period          String       // ex: "2026-03" or "Maret 2026"
+  date            DateTime
+  totalAmount     Decimal      @db.Decimal(15, 2)
+  employeeCount   Int          @default(0)
+  status          String       @default("pending") // pending, paid
+  notes           String?
+  proofUrl        String?      // Bukti Transfer (Supabase Storage URL)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Source Account
+  accountId       String
+  account         CashAccount  @relation(fields: [accountId], references: [id])
+  
+  // List of employees included in this payroll run
+  details         PayrollDetail[]
+}
+
+model PayrollDetail {
+  id          String    @id @default(uuid())
+  payrollId   String
+  employeeId  String
+  amount      Decimal   @db.Decimal(12, 2)
+  
+  payroll     Payroll   @relation(fields: [payrollId], references: [id], onDelete: Cascade)
+  employee    Employee  @relation(fields: [employeeId], references: [id], onDelete: Restrict)
+}
+
+// ==========================================
+// System Settings
+// ==========================================
+
+model SystemSetting {
+  id          String   @id @default("singleton")
+  payrollDay  Int      @default(25)
+  currency    String   @default("IDR")
+  updatedAt   DateTime @updatedAt
+}
+

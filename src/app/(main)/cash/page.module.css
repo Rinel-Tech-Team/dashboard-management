@@ -1,0 +1,141 @@
+.page { padding: var(--content-padding); animation: fadeIn 0.4s ease; }
+
+/* Total Balance */
+.totalCard {
+  text-align: center;
+  padding: 28px;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.08), rgba(99, 102, 241, 0.08));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+}
+
+.totalLabel { display: block; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 6px; }
+
+.totalValue {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-teal), var(--accent-indigo));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Accounts Grid */
+.accountsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 768px) { .accountsGrid { grid-template-columns: 1fr; } }
+
+.accountCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-normal);
+}
+
+.accountCard:hover {
+  border-color: var(--border-color-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.accIcon { font-size: 1.5rem; flex-shrink: 0; }
+.accInfo { flex: 1; }
+.accName { display: block; font-size: 0.875rem; font-weight: 500; color: var(--text-primary); }
+.accBank { display: block; font-size: 0.75rem; color: var(--text-muted); }
+.accBalance {
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--accent-teal);
+  white-space: nowrap;
+}
+
+/* Transactions Section */
+.trxHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.trxActions { display: flex; align-items: center; gap: 10px; }
+
+.tableWrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.table { width: 100%; border-collapse: collapse; }
+
+.table th {
+  background: rgba(15, 23, 42, 0.5);
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 14px 16px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table tbody tr { transition: background var(--transition-fast); }
+.table tbody tr:hover { background: var(--bg-hover); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+.trxDescCell { display: flex; align-items: center; gap: 10px; }
+
+.trxDot {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dotIncome { background: var(--status-success-soft); color: var(--status-success); }
+.dotExpense { background: var(--status-danger-soft); color: var(--status-danger); }
+
+.catBadge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(148, 163, 184, 0.1);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.mono { font-variant-numeric: tabular-nums; font-weight: 600; }
+.amountIncome { color: var(--status-success); }
+.amountExpense { color: var(--status-danger); }

@@ -1,0 +1,22 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.prefix {
+  position: absolute;
+  left: 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent-teal);
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.input {
+  padding-left: 42px !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3px;
+}
