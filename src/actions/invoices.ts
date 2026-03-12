@@ -105,6 +105,8 @@ export async function createInvoice(data: InvoiceFormData) {
     });
 
     revalidatePath('/invoices');
+    revalidatePath('/dashboard');
+    revalidatePath('/projects');
     return { success: true, id: inv.id };
   } catch (err: any) {
     console.error(err);
@@ -134,6 +136,8 @@ export async function updateInvoice(id: string, data: InvoiceFormData) {
 
     revalidatePath('/invoices');
     revalidatePath(`/invoices/${id}`);
+    revalidatePath('/dashboard');
+    revalidatePath('/projects');
     return { success: true };
   } catch (err: any) {
     console.error(err);
@@ -145,6 +149,8 @@ export async function deleteInvoice(id: string) {
   try {
     await prisma.invoice.delete({ where: { id } });
     revalidatePath('/invoices');
+    revalidatePath('/dashboard');
+    revalidatePath('/projects');
     return { success: true };
   } catch (err: any) {
     console.error(err);

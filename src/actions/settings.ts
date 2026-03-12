@@ -66,6 +66,7 @@ export async function updateAdminProfile(id: string, data: { name: string; email
       data: { name: data.name, email: data.email }
     });
     revalidatePath('/settings');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
     console.error('Error updating profile:', error);

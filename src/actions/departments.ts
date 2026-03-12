@@ -53,6 +53,9 @@ export async function createDepartment(data: DepartmentFormData) {
     });
 
     revalidatePath('/departments');
+    revalidatePath('/employees/new');
+    revalidatePath('/employees/[id]/edit', 'page');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error: any) {
     console.error('Failed to create department:', error);
@@ -72,6 +75,9 @@ export async function updateDepartment(id: string, data: DepartmentFormData) {
     });
 
     revalidatePath('/departments');
+    revalidatePath('/employees/new');
+    revalidatePath('/employees/[id]/edit', 'page');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error: any) {
     console.error('Failed to update department:', error);
@@ -86,6 +92,9 @@ export async function deleteDepartment(id: string) {
     });
 
     revalidatePath('/departments');
+    revalidatePath('/employees/new');
+    revalidatePath('/employees/[id]/edit', 'page');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error: any) {
     if (error?.code === 'P2003') {
