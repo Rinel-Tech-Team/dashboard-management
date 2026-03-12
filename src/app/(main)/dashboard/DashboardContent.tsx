@@ -14,7 +14,7 @@ import Topbar from '@/components/Topbar';
 import StatCard from '@/components/StatCard';
 import StatusBadge from '@/components/StatusBadge';
 import ProgressBar from '@/components/ProgressBar';
-import { formatCurrency, formatDate, revenueData } from '@/lib/mockData';
+import { formatCurrency, formatDate } from '@/lib/mockData';
 import styles from './page.module.css';
 
 // Dynamically import the chart — recharts is large and doesn't need to block initial paint
@@ -33,6 +33,10 @@ interface DashboardData {
   activeProjects: any[];
   recentTransactions: any[];
   payrollDay: number;
+  chartData: any[];
+  cashGrowth: number;
+  activeEmployees: number;
+  totalMonthlySalary: number;
 }
 
 export default function DashboardContent({ data }: { data: DashboardData }) {
@@ -43,7 +47,11 @@ export default function DashboardContent({ data }: { data: DashboardData }) {
     estimatedProfit,
     activeProjects,
     recentTransactions,
-    payrollDay
+    payrollDay,
+    chartData,
+    cashGrowth,
+    activeEmployees,
+    totalMonthlySalary
   } = data;
 
   // Payroll countdown
@@ -66,8 +74,8 @@ export default function DashboardContent({ data }: { data: DashboardData }) {
             icon={<Wallet size={22} />}
             label="Total Kas"
             value={formatCurrency(totalCash)}
-            change="+12.5% dari bulan lalu"
-            changeType="positive"
+            change={`${cashGrowth >= 0 ? '+' : ''}${cashGrowth.toFixed(1)}% dari bulan lalu`}
+            changeType={cashGrowth >= 0 ? 'positive' : 'negative'}
             accent="teal"
           />
           <StatCard
@@ -101,9 +109,9 @@ export default function DashboardContent({ data }: { data: DashboardData }) {
           {/* Revenue Chart */}
           <div className={`card ${styles.chartCard}`}>
             <h3 className={styles.cardTitle}>Tren Pemasukan & Pengeluaran</h3>
-            <p className={styles.cardSubtitle}>6 bulan terakhir</p>
+            <p className={styles.cardSubtitle}>12 bulan terakhir</p>
             <div className={styles.chartWrap}>
-              <DashboardChart data={revenueData} />
+              <DashboardChart data={chartData} />
             </div>
           </div>
 
@@ -118,11 +126,11 @@ export default function DashboardContent({ data }: { data: DashboardData }) {
             <div className={styles.payrollDetails}>
               <div className={styles.payrollRow}>
                 <span>Total Gaji Bulanan</span>
-                <span className={styles.payrollValue}>{formatCurrency(76500000)}</span>
+                <span className={styles.payrollValue}>{formatCurrency(totalMonthlySalary)}</span>
               </div>
               <div className={styles.payrollRow}>
                 <span>Jumlah Karyawan Aktif</span>
-                <span className={styles.payrollValue}>7 orang</span>
+                <span className={styles.payrollValue}>{activeEmployees} orang</span>
               </div>
               <div className={styles.payrollRow}>
                 <span>Tanggal Gajian</span>
