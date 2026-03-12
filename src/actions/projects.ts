@@ -112,6 +112,8 @@ export async function createProject(data: ProjectFormData) {
 
     revalidatePath('/projects');
     revalidatePath('/dashboard');
+    revalidatePath('/invoices/new');
+    revalidatePath('/invoices/[id]/edit', 'page');
     return { success: true, id: project.id };
   } catch (err: any) {
     if (err?.message === 'NEXT_REDIRECT') throw err;
@@ -148,6 +150,8 @@ export async function updateProject(id: string, data: ProjectFormData) {
     revalidatePath('/projects');
     revalidatePath(`/projects/${id}`);
     revalidatePath('/dashboard');
+    revalidatePath('/invoices/new');
+    revalidatePath('/invoices/[id]/edit', 'page');
     return { success: true };
   } catch (err: any) {
     if (err?.message === 'NEXT_REDIRECT') throw err;
@@ -161,6 +165,8 @@ export async function deleteProject(id: string) {
     await prisma.project.delete({ where: { id } });
     revalidatePath('/projects');
     revalidatePath('/dashboard');
+    revalidatePath('/invoices/new');
+    revalidatePath('/invoices/[id]/edit', 'page');
     return { success: true };
   } catch (err: any) {
     if (err?.code === 'P2003') {

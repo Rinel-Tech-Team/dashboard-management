@@ -149,6 +149,8 @@ export async function createEmployee(data: EmployeeFormData) {
 
     revalidatePath('/employees');
     revalidatePath('/dashboard');
+    revalidatePath('/projects/new');
+    revalidatePath('/projects/[id]/edit', 'page');
     redirect('/employees');
   } catch (error: any) {
     // redirect throws NEXT_REDIRECT which we need to re-throw
@@ -186,6 +188,8 @@ export async function updateEmployee(id: string, data: EmployeeFormData) {
     revalidatePath('/employees');
     revalidatePath(`/employees/${id}`);
     revalidatePath('/dashboard');
+    revalidatePath('/projects/new');
+    revalidatePath('/projects/[id]/edit', 'page');
     redirect(`/employees/${id}`);
   } catch (error: any) {
     if (error?.message === 'NEXT_REDIRECT') throw error;
@@ -207,6 +211,8 @@ export async function deleteEmployee(id: string) {
 
     revalidatePath('/employees');
     revalidatePath('/dashboard');
+    revalidatePath('/projects/new');
+    revalidatePath('/projects/[id]/edit', 'page');
     return { success: true };
   } catch (error: any) {
     if (error?.code === 'P2003') {

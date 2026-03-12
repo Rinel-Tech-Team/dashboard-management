@@ -151,6 +151,7 @@ export async function deleteInvoice(id: string) {
     revalidatePath('/invoices');
     revalidatePath('/dashboard');
     revalidatePath('/projects');
+    revalidatePath('/projects/[id]', 'page');
     return { success: true };
   } catch (err: any) {
     console.error(err);
